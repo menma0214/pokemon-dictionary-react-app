@@ -5,7 +5,7 @@ import Card from './components/Card/Card.js';
 import Navbar from './components/Navbar/Navbar.js';
 
 function App() {
-  const initialURL = "https://pokeapi.co/api/v2/pokemon?limit=20"
+  const initialURL = "https://pokeapi.co/api/v2/pokemon"
   const [loading, setLoading] = useState(true)
   const [pokemonData, setPokemonData] = useState([]);
   const [nextURL, setNextURL] = useState("");
@@ -23,19 +23,33 @@ function App() {
     };
     fetchPokemonData();
   },[]);
-  
-  const loadPokemon = async(data) => {
-    let _pokemonData = await Promise.all(
-      data.map((pokemon) => {
-        // console.log(pokemon);
-        let pokemonRecord = getPokemon(pokemon.url);
-        return pokemonRecord;
-      })
-    );
-    setPokemonData(_pokemonData);
-  };
+  // リクエスト数が多いためにエラーが起こる可能性を踏まえ、一つずつ呼び出すように修正。
+  // const loadPokemon = async(data) => {
+  //   let _pokemonData = await Promise.all(
+  //     data.map((pokemon) => {
+  //       // console.log(pokemon);
+  //       let pokemonRecord = getPokemon(pokemon.url);
+  //       return pokemonRecord;
+  //     })
+  //   );
+  //   setPokemonData(_pokemonData);
+  // };
 
   // console.log(pokemonData);
+
+  const loadPokemon = async (data) => {
+    let _pokemonData = [];
+    for (const pokemon of data) {
+      try {
+        const pokemonRecord = await getPokemon(pokemon.url);
+        _pokemonData.push(pokemonRecord);
+        // 必要であればここで少し待つ処理を入れる（例：setTimeoutを利用）
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setPokemonData(_pokemonData);
+  };
 
   const handleNextPage = async () => {
     setLoading(true);
