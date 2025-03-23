@@ -5,6 +5,7 @@ pokemonAPIを利用し、自身のReactアウトプット目的で作成した�
 
 # 技術スタック
 |カテゴリー|使用技術|
+|---------|---------|
 |言語|javascript|
 |フレームワーク|React|
 |フロントエンド|HTML, CSS, javascript|
