@@ -19,6 +19,7 @@ function App() {
       loadPokemon(res.results);
       console.log(res);
       setNextURL(res.next)
+      setPrevURL(res.previous)
       setLoading(false);
     };
     fetchPokemonData();
@@ -57,17 +58,18 @@ function App() {
     // console.log(data);
     await loadPokemon(data.results);
     setNextURL(data.next);
+    setPrevURL(data.previous);
     setLoading(false);
   };
 
-  const handlePrevPage = async() => {
+  const handlePrevPage = async () => {
     if(!prevURL) return;
 
     setLoading(true);
     let data = await getAllPokemon(prevURL);
     await loadPokemon(data.results);
     setNextURL(data.next);
-    setPrevURL(data.previouis);
+    setPrevURL(data.previous);
     setLoading(false);
   };
 
